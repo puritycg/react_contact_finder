@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Hello!</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.0/react.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.0/react-dom.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.6.15/browser.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id='content'></div>
+
+<script type="text/babel">
+    var CONTACTS = [
+        {
+            id: 1,
+            name: 'Judy Shelton',
+            phoneNumber: '(727)-869-6131',
+            image: 'https://randomuser.me/api/portraits/women/93.jpg'
+        },
+        {
+            id: 2,
+            name: 'Gwendolyn Chavez',
+            phoneNumber: '(108)-708-1447',
+            image: 'https://randomuser.me/api/portraits/women/82.jpg'
+        },
+        {
+            id: 3,
+            name: 'Toni Watkins',
+            phoneNumber: '(941)-513-8832',
+            image: 'https://randomuser.me/api/portraits/women/54.jpg'
+        },
+        {
+            id: 4,
+            name: 'Joann Peters',
+            phoneNumber: '(545)-532-3311',
+            image: 'https://randomuser.me/api/portraits/women/59.jpg'
+        },
+        {
+            id: 5,
+            name: 'Harry Taylor',
+            phoneNumber: '(732)-304-1898',
+            image: 'https://randomuser.me/api/portraits/men/29.jpg'
+        }
+    ];
+
+    let Contact = React.createClass({
+        render: function () {
+            return <li>
+                <div className="contact">
+                    <img className="contact-image" src={this.props.image}/>
+                    <div className="contact_group">
+                        <div className="contact-name">{this.props.name}</div>
+                        <div className="contact-tel">{this.props.tel}</div>
+                    </div>
+                </div>
+            </li>
+        }
+    });
+
+    let ContactList = React.createClass({
+        getInitialState: function () {
+            return {
+                displayedContacts: CONTACTS
+            };
+        },
+        handleSearch: function (event) {
+            var searchQuery = event.target.value.toLocaleLowerCase();
+            var displayedContacts = CONTACTS.filter(function (el) {
+                var searchValue = el.name.toLocaleLowerCase();
+                return searchValue.indexOf(searchQuery) !== -1;
+            });
+            this.setState({
+                displayedContacts: displayedContacts
+            });
+        },
+        render: function () {
+            return (
+                    <div className="contacts">
+                        <input type="text" className="input_field" placeholder="type here"
+                               onChange={this.handleSearch}/>
+                        <ul>
+                            {
+                                this.state.displayedContacts.map(function (el) {
+                                    return <Contact
+                                            key={el.id}
+                                            name={el.name}
+                                            tel={el.phoneNumber}
+                                            image={el.image}/>
+                                })
+                            }
+                        </ul>
+                    </div>
+            );
+        }
+    });
+    ReactDOM.render(
+            <ContactList/>,
+        document.getElementById('content')
+    );
+
+</script>
+
+
+</body>
+
+</html>
